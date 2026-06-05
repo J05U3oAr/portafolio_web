@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Arodi — Fullstack Developer</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+  <!-- Custom cursor -->
+  <div id="cursor"></div>
+  <div id="cursor-ring"></div>
+
+  <!-- Space background -->
+  <div class="nebula-bg"></div>
+  <canvas id="space-canvas"></canvas>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="#hero" class="nav-logo">A<span>.</span></a>
+    <ul class="nav-links">
+      <li><a href="#about">Sobre mí</a></li>
+      <li><a href="#projects">Proyectos</a></li>
+      <li><a href="#api-demo">API Demo</a></li>
+      <li><a href="#contact">Contacto</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <!-- ── HERO ── -->
+    <section id="hero">
+      <div class="hero-eyebrow">Desarrollador Fullstack Junior</div>
+      <div class="hero-intro">
+        <h1 class="hero-name">
+          <span class="name-main">Arodi</span>
+          <span class="name-accent">Chávez</span>
+        </h1>
+        <div class="hero-portrait">
+          <img src="Media/imagen_2026-06-05_022946101.png" alt="Retrato de Arodi Vásquez" class="profile-photo">
+        </div>
+      </div>
+      <p class="hero-title">
+        <span class="highlight">Frontend + Backend</span> — Next.js · GO · Python · TypeScript · Java · C++ · Kotlin
+      </p>
+      <p class="hero-desc">
+        Construyo desde la interfaz hasta la base de datos. Me interesa entender cómo funciona cada capa del stack, no solo usarla.
+      </p>
+      <div class="hero-actions">
+        <a href="#projects" class="btn-primary"><span>Ver proyectos</span></a>
+        <a href="#contact"  class="btn-ghost">Trabajemos juntos</a>
+      </div>
+      <div class="hero-scroll-hint">
+        <div class="scroll-line"></div>
+      </div>
+    </section>
+
+    <!-- ── ABOUT ── -->
+    <section id="about">
+      <div class="section-label" data-index="01">Sobre mí</div>
+      <h2 class="section-title reveal">Explorando el stack<br>completo.</h2>
+
+      <div class="about-grid">
+        <div class="about-text reveal">
+          <p>
+            Soy desarrollador fullstack con enfoque en construir sistemas que funcionan de punta a punta. Trabajo cómodo tanto en la lógica de servidor como en la experiencia de usuario.
+          </p>
+          <p>
+            Mi forma de aprender es construyendo: entiendo mejor un concepto cuando lo implemento, lo rompo y lo arreglo. Eso se refleja en cómo abordo los proyectos — comienzo desde el problema real, no desde el framework.
+          </p>
+          <p>
+            Busco unirme a un equipo donde pueda tocar múltiples partes del producto, seguir aprendiendo en producción, y contribuir desde el día uno.
+          </p>
+        </div>
+
+        <div class="skills-grid reveal">
+          <div class="skill-category">
+            <div class="skill-category-name">Lenguajes</div>
+            <div class="skill-tags">
+              <span class="skill-tag">JavaScript</span>
+              <span class="skill-tag">TypeScript</span>
+              <span class="skill-tag">GO</span>
+              <span class="skill-tag">Python</span>
+              <span class="skill-tag">Java</span>
+              <span class="skill-tag">C++</span>
+              <span class="skill-tag">Kotlin</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <div class="skill-category-name">Frontend</div>
+            <div class="skill-tags">
+              <span class="skill-tag">React</span>
+              <span class="skill-tag">Next.js</span>
+              <span class="skill-tag">CSS vanilla</span>
+              <span class="skill-tag">HTML</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <div class="skill-category-name">Backend</div>
+            <div class="skill-tags">
+              <span class="skill-tag">Node.js</span>
+              <span class="skill-tag">API Routes</span>
+              <span class="skill-tag">REST</span>
+              <span class="skill-tag">FastAPI</span>
+            </div>
+          </div>
+          <div class="skill-category">
+            <div class="skill-category-name">Datos & Tools</div>
+            <div class="skill-tags">
+              <span class="skill-tag">PostgreSQL</span>
+              <span class="skill-tag">Git</span>
+              <span class="skill-tag">GitHub</span>
+              <span class="skill-tag">Vercel</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── PROJECTS ── -->
+    <section id="projects">
+      <div class="projects-header">
+        <div>
+          <div class="section-label" data-index="02">Proyectos</div>
+          <h2 class="section-title reveal">Trabajo seleccionado.</h2>
+        </div>
+        <span class="project-count reveal">04 proyectos</span>
+      </div>
+
+      <div class="projects-list">
+
+        <article class="project-card reveal">
+          <div class="project-info">
+            <div class="project-num">01 / Kotlin + Android</div>
+            <h3 class="project-name">Mediproyecto PM</h3>
+            <p class="project-desc">
+              Aplicacion movil para Android enfocada en recordatorios medicos. Permite notificar a los usuarios cuando deben tomar una medicina y centraliza funciones de apoyo para situaciones de emergencia.
+            </p>
+            <div class="project-stack">
+              <span class="stack-tag lang">Kotlin</span>
+              <span class="stack-tag tool">Android</span>
+              <span class="stack-tag tool">Notificaciones</span>
+              <span class="stack-tag tool">Mobile</span>
+            </div>
+            <div class="project-highlights">
+              <div class="project-highlight">Recordatorios para la toma de medicamentos</div>
+              <div class="project-highlight">Servicio para llamadas de emergencia</div>
+              <div class="project-highlight">Recursos y revistas de emergencia para el usuario</div>
+            </div>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/J05U3oAr/Mediproyecto_PM" target="_blank" rel="noopener" class="project-link primary">GitHub →</a>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-info">
+            <div class="project-num">02 / C++ + Terminal</div>
+            <h3 class="project-name">Breakout en ASCII</h3>
+            <p class="project-desc">
+              Juego de Breakout construido en C++ para ejecutarse dentro de la terminal. La experiencia visual se realizo con caracteres ASCII y la logica del juego se trabajo mediante procesos con hilos.
+            </p>
+            <div class="project-stack">
+              <span class="stack-tag lang">C++</span>
+              <span class="stack-tag tool">ASCII</span>
+              <span class="stack-tag tool">Terminal</span>
+              <span class="stack-tag tool">Hilos</span>
+            </div>
+            <div class="project-highlights">
+              <div class="project-highlight">Renderizado completo en consola con codigo ASCII</div>
+              <div class="project-highlight">Movimiento y mecanicas coordinadas con hilos</div>
+              <div class="project-highlight">Proyecto orientado a microprocesadores y concurrencia</div>
+            </div>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/J05U3oAr/Proyecto_MicroProcesadores" target="_blank" rel="noopener" class="project-link primary">GitHub →</a>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-info">
+            <div class="project-num">03 / Ingenieria de Software</div>
+            <h3 class="project-name">Nexus Residencial</h3>
+            <p class="project-desc">
+              Sistema de gestion para residenciales con roles diferenciados para residente, inquilino, guardia y administrador. Incluye control de visitantes, servicios e historial de pagos.
+            </p>
+            <div class="project-stack">
+              <span class="stack-tag lang">Software</span>
+              <span class="stack-tag tool">Roles</span>
+              <span class="stack-tag tool">Seguridad</span>
+              <span class="stack-tag db">Pagos</span>
+              <span class="stack-tag db">Deploy</span>
+            </div>
+            <div class="project-highlights">
+              <div class="project-highlight">Gestion de accesos para visitantes de la residencia</div>
+              <div class="project-highlight">Roles para residentes, inquilinos, guardias y admin</div>
+              <div class="project-highlight">Modulo de servicios con historial de pagos</div>
+            </div>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/Diana-Sosa18/Proyecto-1---software" target="_blank" rel="noopener" class="project-link primary">GitHub →</a>
+          </div>
+        </article>
+
+        <article class="project-card reveal">
+          <div class="project-info">
+            <div class="project-num">04 / Vite + Web</div>
+            <h3 class="project-name">Calculadora Web</h3>
+            <p class="project-desc">
+              Calculadora web desarrollada y desplegada en un servidor del curso. El proyecto integro tecnologias modernas de frontend para construir una interfaz rapida y funcional.
+            </p>
+            <div class="project-stack">
+              <span class="stack-tag lang">JavaScript</span>
+              <span class="stack-tag tool">Vite</span>
+              <span class="stack-tag tool">Frontend</span>
+              <span class="stack-tag db">Deploy</span>
+            </div>
+            <div class="project-highlights">
+              <div class="project-highlight">Interfaz web para operaciones de calculadora</div>
+              <div class="project-highlight">Construccion del proyecto con herramientas modernas</div>
+              <div class="project-highlight">Despliegue en servidor asignado por el profesor</div>
+            </div>
+          </div>
+          <div class="project-links">
+            <a href="https://github.com/J05U3oAr/Calculadora_pry2" target="_blank" rel="noopener" class="project-link primary">GitHub →</a>
+          </div>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ── API DEMO ── -->
+    <section id="api-demo">
+      <div class="section-label" data-index="03">API Demo — Backend en Vivo</div>
+      <h2 class="section-title reveal">No solo interfaz.</h2>
+
+      <div class="demo-container">
+
+        <div class="demo-explanation reveal">
+          <p>
+            Este formulario es una demostración de un backend real. No envía un email a un servicio externo — valida los datos <span class="code-inline">server-side</span> con una <span class="code-inline">API Route</span> de Next.js, construye una respuesta estructurada y la devuelve al cliente.
+          </p>
+          <p>
+            El endpoint <span class="code-inline">POST /api/contact</span> verifica que todos los campos estén presentes, valida el formato del email con regex, sanitiza el mensaje y retorna un objeto JSON con el estado de la operación.
+          </p>
+          <p>
+            Esto demuestra que entiendo cómo conectar frontend y backend: el cliente no sabe nada de la validación — todo sucede en el servidor antes de responder.
+          </p>
+
+          <div class="api-log" id="api-log">
+            <div class="api-log-header">
+              <div class="log-dot" id="log-dot"></div>
+              <span style="font-family: var(--font-mono); font-size: 0.7rem; color: var(--text-muted);">API Response</span>
+            </div>
+            <div class="api-log-body" id="api-log-body">
+              <div class="log-line" style="color: var(--text-muted); font-style: italic;">Esperando request...</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="reveal">
+          <div class="api-endpoint-label">
+            <span class="method-badge">POST</span>
+            /api/contact
+          </div>
+
+          <div class="contact-form">
+            <div class="form-field">
+              <label class="form-label" for="cf-name">Nombre</label>
+              <input type="text" id="cf-name" class="form-input" placeholder="Tu nombre">
+              <div class="form-error" id="err-name">Campo requerido</div>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="cf-email">Email</label>
+              <input type="email" id="cf-email" class="form-input" placeholder="tu@email.com">
+              <div class="form-error" id="err-email">Email inválido</div>
+            </div>
+            <div class="form-field">
+              <label class="form-label" for="cf-message">Mensaje</label>
+              <textarea id="cf-message" class="form-textarea" placeholder="Cuéntame sobre el proyecto..."></textarea>
+              <div class="form-error" id="err-message">Mínimo 10 caracteres</div>
+            </div>
+            <button class="form-submit" id="form-submit" onclick="handleContactSubmit()">
+              Enviar Request →
+            </button>
+            <div class="form-response" id="form-response"></div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── CONSTELLATION DIVIDER ── -->
+    <div class="constellation-wrapper">
+      <canvas id="constellation-canvas"></canvas>
+    </div>
+
+    <!-- ── CONTACT CTA ── -->
+    <section id="contact">
+      <div class="contact-black-hole" aria-hidden="true">
+        <div class="black-hole-glow"></div>
+        <div class="black-hole-disc disc-one"></div>
+        <div class="black-hole-disc disc-two"></div>
+        <div class="black-hole-core"></div>
+        <div class="black-hole-stars stars-one"></div>
+        <div class="black-hole-stars stars-two"></div>
+      </div>
+      <h2 class="contact-title">
+        ¿Construimos<br><span class="gradient-word">algo juntos?</span>
+      </h2>
+      <p class="contact-sub">
+        Busco un equipo donde pueda aprender en producción y aportar desde el primer día. Fullstack junior, disponible ya.
+      </p>
+      <div class="contact-links">
+        <div class="email-tray-wrap">
+          <button type="button" class="btn-primary email-toggle" id="email-toggle" aria-expanded="false" aria-controls="email-tray">
+            <span>Email directo</span>
+          </button>
+          <div class="email-tray" id="email-tray" aria-hidden="true">
+            <a href="mailto:chaarodi@gmail.com" class="email-option">
+              <span class="email-label">Personal</span>
+              <span class="email-address">chaarodi@gmail.com</span>
+            </a>
+            <a href="mailto:cha241112@uvg.edu.gt" class="email-option">
+              <span class="email-label">Estudiantil</span>
+              <span class="email-address">cha241112@uvg.edu.gt</span>
+            </a>
+          </div>
+        </div>
+        <a href="https://github.com/J05U3oAr"       target="_blank" class="btn-ghost">GitHub</a>
+        <a href="https://www.linkedin.com/in/arodi-chávez-449b133ba"  target="_blank" class="btn-ghost">LinkedIn</a>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <span class="footer-text">Arodi Vásquez — Fullstack Developer — Guatemala 2025</span>
+    <span class="footer-coords">
+      <span>14.6349° N</span> · <span>90.5069° W</span>
+    </span>
+  </footer>
+
+  <!-- Scripts — loaded at end of body so DOM is ready -->
+  <script src="space.js"></script>
+  <script src="main.js"></script>
+
+</body>
+</html>
