@@ -1,6 +1,6 @@
 # Portafolio — Arodi Vásquez
 
-**[Ver portafolio en vivo →](https://arodi.dev)** *(reemplazar con URL de deploy)*
+**[Ver portafolio en vivo →] https://j05u3oar.github.io/portafolio_web/
 
 ---
 
