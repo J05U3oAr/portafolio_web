@@ -170,7 +170,7 @@ nav {
   background: linear-gradient(90deg, var(--accent-violet), transparent);
 }
 
-/* ── WORMHOLE TRANSITION ── */
+/* ── VECTOR PLANE TRANSITION ── */
 .wormhole-transition {
   position: fixed;
   inset: 0;
@@ -178,74 +178,128 @@ nav {
   overflow: hidden;
   display: grid;
   place-items: center;
-  background: #010107;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(38, 29, 84, 0.55), transparent 28%),
+    #010107;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
+  perspective: 850px;
 }
 
 .wormhole-transition.is-active {
   visibility: visible;
-  animation: wormholeCurtain 950ms cubic-bezier(0.76, 0, 0.24, 1) both;
+  animation: vectorCurtain 1150ms cubic-bezier(0.76, 0, 0.24, 1) both;
 }
 
-.wormhole-vignette {
+.vector-space {
   position: absolute;
-  inset: -20%;
-  background:
-    repeating-conic-gradient(
-      from 8deg,
-      transparent 0deg 4deg,
-      rgba(167, 139, 250, 0.22) 5deg,
-      transparent 7deg 13deg,
-      rgba(34, 211, 238, 0.18) 14deg,
-      transparent 16deg 23deg
-  );
-  filter: blur(2px);
+  inset: -12%;
+  transform-style: preserve-3d;
 }
 
-.wormhole-vignette::after {
-  content: '';
+.vector-grid {
+  position: absolute;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.18) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(167, 139, 250, 0.2) 1px, transparent 1px);
+  background-size: 48px 48px;
+  opacity: 0;
+  mask-image: linear-gradient(to top, #000, transparent 92%);
+  -webkit-mask-image: linear-gradient(to top, #000, transparent 92%);
+}
+
+.grid-floor,
+.grid-ceiling {
+  left: -15%;
+  width: 130%;
+  height: 64%;
+  transform-origin: center bottom;
+}
+
+.grid-floor {
+  bottom: -18%;
+  transform: rotateX(66deg);
+}
+
+.grid-ceiling {
+  top: -18%;
+  transform: rotateX(-66deg) rotate(180deg);
+}
+
+.grid-left,
+.grid-right {
+  top: -10%;
+  width: 55%;
+  height: 120%;
+  transform-origin: center right;
+}
+
+.grid-left {
+  left: -17%;
+  transform: rotateY(-68deg) rotate(90deg);
+}
+
+.grid-right {
+  right: -17%;
+  transform: rotateY(68deg) rotate(-90deg);
+}
+
+.vector-portal {
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, transparent 0 5%, rgba(3, 2, 10, 0.28) 28%, #010107 72%);
-}
-
-.wormhole-tunnel {
-  position: absolute;
-  width: min(78vw, 780px);
-  aspect-ratio: 1;
   display: grid;
   place-items: center;
-  filter: drop-shadow(0 0 24px rgba(34, 211, 238, 0.34));
+  transform-style: preserve-3d;
 }
 
-.tunnel-ring {
+.portal-frame {
   position: absolute;
-  width: 14%;
-  aspect-ratio: 1;
-  border: 2px solid rgba(198, 181, 255, 0.88);
-  border-radius: 44% 56% 51% 49% / 55% 43% 57% 45%;
+  width: min(16vw, 180px);
+  aspect-ratio: 1.65;
+  border: 1px solid rgba(189, 173, 255, 0.82);
   box-shadow:
-    0 0 18px rgba(167, 139, 250, 0.8),
-    inset 0 0 14px rgba(34, 211, 238, 0.56);
+    0 0 18px rgba(167, 139, 250, 0.35),
+    inset 0 0 18px rgba(34, 211, 238, 0.12);
   opacity: 0;
 }
 
-.ring-2 { animation-delay: 70ms; transform: rotate(31deg); }
-.ring-3 { animation-delay: 140ms; transform: rotate(67deg); }
-.ring-4 { animation-delay: 210ms; transform: rotate(102deg); }
-.ring-5 { animation-delay: 280ms; transform: rotate(141deg); }
-.ring-6 { animation-delay: 350ms; transform: rotate(176deg); }
+.frame-2 { animation-delay: 80ms !important; }
+.frame-3 { animation-delay: 160ms !important; }
+.frame-4 { animation-delay: 240ms !important; }
+.frame-5 { animation-delay: 320ms !important; }
 
-.tunnel-core {
-  width: 5%;
-  aspect-ratio: 1;
-  border-radius: 50%;
-  background: white;
+.portal-core {
+  width: min(12vw, 130px);
+  aspect-ratio: 1.65;
+  background: rgba(230, 248, 255, 0.96);
   box-shadow:
-    0 0 35px 14px rgba(34, 211, 238, 0.9),
-    0 0 90px 38px rgba(99, 102, 241, 0.55);
+    0 0 45px 12px rgba(34, 211, 238, 0.55),
+    0 0 120px 34px rgba(99, 102, 241, 0.4);
+  opacity: 0;
+}
+
+.vector-axis {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: linear-gradient(90deg, transparent, rgba(34, 211, 238, 0.65), transparent);
+  transform: translate(-50%, -50%);
+  opacity: 0;
+}
+
+.axis-x { width: 100%; height: 1px; }
+.axis-y { width: 1px; height: 100%; }
+
+.plane-coordinates {
+  position: absolute;
+  top: 2rem;
+  left: 2rem;
+  font-family: var(--font-mono);
+  font-size: 0.58rem;
+  color: rgba(34, 211, 238, 0.55);
+  letter-spacing: 0.18em;
+  opacity: 0;
 }
 
 .warp-copy {
@@ -258,29 +312,35 @@ nav {
   align-items: center;
   gap: 0.35rem;
   white-space: nowrap;
+  opacity: 0;
 }
 
-.wormhole-transition.is-active .wormhole-vignette {
-  animation: warpStreaks 780ms ease-in both;
+.wormhole-transition.is-active .vector-space {
+  animation: vectorSpaceDive 1050ms cubic-bezier(0.65, 0, 0.35, 1) both;
 }
 
-.wormhole-transition.is-active .wormhole-tunnel {
-  animation: tunnelTilt 900ms ease-in-out both;
+.wormhole-transition.is-active .vector-grid {
+  animation: gridReveal 1050ms ease both;
 }
 
-.wormhole-transition.is-active .tunnel-ring {
-  animation-name: tunnelRing;
-  animation-duration: 680ms;
-  animation-timing-function: cubic-bezier(0.22, 0.61, 0.36, 1);
-  animation-fill-mode: both;
+.wormhole-transition.is-active .portal-frame {
+  animation: portalFrame 720ms cubic-bezier(0.2, 0.7, 0.2, 1) both;
 }
 
-.wormhole-transition.is-active .tunnel-core {
-  animation: coreBurst 760ms ease-in both;
+.wormhole-transition.is-active .portal-core {
+  animation: planeFlash 920ms ease-in both;
+}
+
+.wormhole-transition.is-active .vector-axis {
+  animation: axisFlash 900ms ease both;
+}
+
+.wormhole-transition.is-active .plane-coordinates {
+  animation: coordinateFlash 920ms ease both;
 }
 
 .wormhole-transition.is-active .warp-copy {
-  animation: warpCopy 800ms ease both;
+  animation: warpCopy 920ms ease both;
 }
 
 .warp-kicker {
@@ -1410,6 +1470,92 @@ footer {
   transform: translateY(0);
 }
 
+/* ── SECTION PLANES ── */
+body.plane-mode {
+  width: 100%;
+  height: 100dvh;
+  padding-bottom: 0;
+  overflow: hidden;
+}
+
+body.plane-mode main {
+  position: fixed;
+  inset: 0;
+  height: 100dvh;
+  overflow: hidden;
+  perspective: 1200px;
+  transform-style: preserve-3d;
+}
+
+body.plane-mode main > section {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100dvh;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: none;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transform: translateZ(-620px) rotateX(4deg) scale(0.78);
+  transform-origin: 50% 50%;
+  will-change: transform, opacity, filter;
+}
+
+body.plane-mode main > section::-webkit-scrollbar { display: none; }
+
+body.plane-mode main > section.plane-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+  transform: translateZ(0) rotateX(0) scale(1);
+}
+
+body.plane-mode main > section:not(#hero) {
+  justify-content: flex-start;
+  padding-bottom: 10rem;
+}
+
+body.plane-mode main > section.plane-exit-forward,
+body.plane-mode main > section.plane-exit-backward {
+  visibility: visible;
+  pointer-events: none;
+  z-index: 2;
+}
+
+body.plane-mode main > section.plane-enter-forward,
+body.plane-mode main > section.plane-enter-backward {
+  visibility: visible;
+  z-index: 3;
+}
+
+body.plane-mode main > section.plane-exit-forward {
+  animation: planeExitForward 900ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+body.plane-mode main > section.plane-enter-forward {
+  animation: planeEnterForward 900ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+body.plane-mode main > section.plane-exit-backward {
+  animation: planeExitBackward 900ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+body.plane-mode main > section.plane-enter-backward {
+  animation: planeEnterBackward 900ms cubic-bezier(0.65, 0, 0.35, 1) both;
+}
+
+body.plane-mode .constellation-wrapper,
+body.plane-mode > footer {
+  display: none;
+}
+
+body.plane-mode #contact {
+  padding-bottom: 10rem;
+}
+
 /* ── ANIMATIONS ── */
 @keyframes fadeSlideUp {
   from { opacity: 0; transform: translateY(24px); }
@@ -1461,40 +1607,75 @@ footer {
   50%      { opacity: 1; transform: scale(1.15); }
 }
 
-@keyframes wormholeCurtain {
+@keyframes vectorCurtain {
   0%   { opacity: 0; }
-  18%  { opacity: 1; }
-  72%  { opacity: 1; }
+  14%  { opacity: 1; }
+  76%  { opacity: 1; }
   100% { opacity: 0; }
 }
 
-@keyframes warpStreaks {
-  0%   { opacity: 0; transform: scale(0.06) rotate(0deg); }
-  28%  { opacity: 1; }
-  100% { opacity: 0.25; transform: scale(1.7) rotate(22deg); }
+@keyframes vectorSpaceDive {
+  0%   { transform: translateZ(-500px) scale(0.55); filter: blur(3px); }
+  45%  { filter: blur(0); }
+  100% { transform: translateZ(520px) scale(1.25); filter: blur(1px); }
 }
 
-@keyframes tunnelRing {
-  0%   { opacity: 0; width: 8%; filter: blur(5px); }
-  30%  { opacity: 1; }
-  100% { opacity: 0; width: 115%; filter: blur(0); }
+@keyframes gridReveal {
+  0%   { opacity: 0; background-position: 0 0; }
+  24%  { opacity: 0.8; }
+  100% { opacity: 0; background-position: 0 240px; }
 }
 
-@keyframes tunnelTilt {
-  0%   { transform: perspective(500px) rotateX(0deg) rotateZ(-8deg) scale(0.5); }
-  100% { transform: perspective(500px) rotateX(14deg) rotateZ(14deg) scale(1.2); }
+@keyframes portalFrame {
+  0%   { opacity: 0; transform: translateZ(-800px) scale(0.16); }
+  22%  { opacity: 0.95; }
+  100% { opacity: 0; transform: translateZ(500px) scale(8); }
 }
 
-@keyframes coreBurst {
-  0%, 35% { opacity: 0; transform: scale(0.25); }
-  62%     { opacity: 1; transform: scale(1); }
-  100%    { opacity: 0; transform: scale(22); }
+@keyframes planeFlash {
+  0%, 48% { opacity: 0; transform: scale(0.35); }
+  68%     { opacity: 1; transform: scale(1); }
+  100%    { opacity: 0; transform: scale(13); }
+}
+
+@keyframes axisFlash {
+  0%, 15% { opacity: 0; }
+  42%     { opacity: 0.9; }
+  100%    { opacity: 0; transform: translate(-50%, -50%) scale(2.4); }
 }
 
 @keyframes warpCopy {
   0%, 12% { opacity: 0; transform: translate(-50%, 12px); }
   35%, 70% { opacity: 1; transform: translate(-50%, 0); }
   100% { opacity: 0; transform: translate(-50%, -8px); }
+}
+
+@keyframes coordinateFlash {
+  0%, 12% { opacity: 0; transform: translateY(10px); }
+  35%, 70% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-8px); }
+}
+
+@keyframes planeExitForward {
+  0%   { opacity: 1; transform: translateZ(0) rotateX(0) scale(1); filter: blur(0); }
+  100% { opacity: 0; transform: translateZ(480px) rotateX(-5deg) scale(1.2); filter: blur(10px); }
+}
+
+@keyframes planeEnterForward {
+  0%   { opacity: 0; transform: translateZ(-720px) rotateX(6deg) scale(0.68); filter: blur(12px); }
+  58%  { opacity: 0; }
+  100% { opacity: 1; transform: translateZ(0) rotateX(0) scale(1); filter: blur(0); }
+}
+
+@keyframes planeExitBackward {
+  0%   { opacity: 1; transform: translateZ(0) rotateX(0) scale(1); filter: blur(0); }
+  100% { opacity: 0; transform: translateZ(-620px) rotateX(5deg) scale(0.7); filter: blur(10px); }
+}
+
+@keyframes planeEnterBackward {
+  0%   { opacity: 0; transform: translateZ(520px) rotateX(-5deg) scale(1.22); filter: blur(12px); }
+  58%  { opacity: 0; }
+  100% { opacity: 1; transform: translateZ(0) rotateX(0) scale(1); filter: blur(0); }
 }
 
 /* ── RESPONSIVE ── */
@@ -1544,7 +1725,8 @@ footer {
   .timeline-track { padding-bottom: 1.1rem; }
 
   .journey-status #journey-name { display: none; }
-  .wormhole-tunnel { width: 110vw; }
+  .portal-frame { width: min(32vw, 180px); }
+  .portal-core { width: min(26vw, 130px); }
 }
 
 @media (prefers-reduced-motion: reduce) {

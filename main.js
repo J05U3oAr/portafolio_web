@@ -45,7 +45,7 @@ const revealObserver = new IntersectionObserver(entries => {
 
 revealEls.forEach(el => revealObserver.observe(el));
 
-/* ── Timeline Navigation + Wormhole Travel ── */
+/* ── Timeline Navigation + Vector Plane Travel ── */
 const timelineDock = document.querySelector('.timeline-dock');
 const timelineStops = Array.from(document.querySelectorAll('.timeline-stop'));
 const wormhole = document.getElementById('wormhole-transition');
@@ -69,7 +69,10 @@ const chapterNames = [
 
 let activeChapter = 0;
 let isTravelling = false;
-let scrollFrame = null;
+let wheelIntent = 0;
+let wheelResetTimer = null;
+let touchStartY = 0;
+let travelLockedUntil = 0;
 
 function setActiveChapter(index) {
   const safeIndex = Math.max(0, Math.min(index, timelineStops.length - 1));
@@ -96,42 +99,43 @@ function setActiveChapter(index) {
   if (timelinePercent) timelinePercent.textContent = `${String(Math.round(progress)).padStart(2, '0')}%`;
 }
 
-function detectCurrentChapter() {
-  const readingLine = window.innerHeight * 0.42;
-  let currentIndex = 0;
-
-  journeySections.forEach((section, index) => {
-    const rect = section.getBoundingClientRect();
-    if (rect.top <= readingLine) currentIndex = index;
-  });
-
-  if (currentIndex !== activeChapter && !isTravelling) {
-    setActiveChapter(currentIndex);
-  }
-}
-
-function queueChapterDetection() {
-  if (scrollFrame) return;
-  scrollFrame = requestAnimationFrame(() => {
-    detectCurrentChapter();
-    scrollFrame = null;
+function revealChapter(section) {
+  section.querySelectorAll('.reveal').forEach(element => {
+    element.classList.add('visible');
   });
 }
 
 function travelToChapter(target, label) {
   const targetIndex = journeySections.indexOf(target);
-  if (targetIndex < 0) return;
+  if (targetIndex < 0 || targetIndex === activeChapter || isTravelling) return;
+
+  const currentSection = journeySections[activeChapter];
+  const direction = targetIndex > activeChapter ? 'forward' : 'backward';
+  const exitClass = `plane-exit-${direction}`;
+  const enterClass = `plane-enter-${direction}`;
+
+  target.scrollTop = 0;
 
   if (reducedMotion.matches) {
-    target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    currentSection.classList.remove('plane-active');
+    currentSection.setAttribute('aria-hidden', 'true');
+    target.classList.add('plane-active');
+    target.removeAttribute('aria-hidden');
+    revealChapter(target);
     setActiveChapter(targetIndex);
     history.replaceState(null, '', `#${target.id}`);
     return;
   }
 
-  if (isTravelling) return;
   isTravelling = true;
   if (warpDestination) warpDestination.textContent = label;
+
+  currentSection.classList.remove('plane-active');
+  currentSection.classList.add(exitClass);
+  currentSection.setAttribute('aria-hidden', 'true');
+  target.classList.add('plane-active', enterClass);
+  target.removeAttribute('aria-hidden');
+  revealChapter(target);
 
   wormhole?.classList.remove('is-active');
   void wormhole?.offsetWidth;
@@ -139,16 +143,63 @@ function travelToChapter(target, label) {
   document.body.classList.add('is-travelling');
 
   window.setTimeout(() => {
-    target.scrollIntoView({ behavior: 'auto', block: 'start' });
     setActiveChapter(targetIndex);
     history.replaceState(null, '', `#${target.id}`);
-  }, 420);
+  }, 520);
 
   window.setTimeout(() => {
+    currentSection.classList.remove(exitClass);
+    target.classList.remove(enterClass);
     wormhole?.classList.remove('is-active');
     document.body.classList.remove('is-travelling');
     isTravelling = false;
-  }, 980);
+    travelLockedUntil = performance.now() + 550;
+    wheelIntent = 0;
+  }, 1180);
+}
+
+function travelByStep(direction) {
+  const targetIndex = activeChapter + direction;
+  if (targetIndex < 0 || targetIndex >= journeySections.length) return;
+
+  const stop = timelineStops[targetIndex];
+  travelToChapter(journeySections[targetIndex], stop.dataset.label);
+}
+
+function isAtPlaneEdge(section, direction) {
+  if (section.id === 'hero') return true;
+
+  const maxScroll = section.scrollHeight - section.clientHeight;
+  if (maxScroll <= 2) return true;
+  if (direction > 0) return section.scrollTop >= maxScroll - 2;
+  return section.scrollTop <= 2;
+}
+
+function handlePlaneWheel(event) {
+  if (event.target.closest('textarea, input, .email-tray')) return;
+  if (isTravelling || performance.now() < travelLockedUntil) {
+    event.preventDefault();
+    return;
+  }
+
+  const direction = Math.sign(event.deltaY);
+  if (!direction) return;
+
+  const section = journeySections[activeChapter];
+  if (!isAtPlaneEdge(section, direction)) {
+    wheelIntent = 0;
+    return;
+  }
+
+  const targetIndex = activeChapter + direction;
+  if (targetIndex < 0 || targetIndex >= journeySections.length) return;
+
+  event.preventDefault();
+  wheelIntent += Math.abs(event.deltaY);
+  window.clearTimeout(wheelResetTimer);
+  wheelResetTimer = window.setTimeout(() => { wheelIntent = 0; }, 180);
+
+  if (wheelIntent >= 32) travelByStep(direction);
 }
 
 document.querySelectorAll('a[href^="#"]').forEach(link => {
@@ -166,10 +217,47 @@ document.querySelectorAll('a[href^="#"]').forEach(link => {
   });
 });
 
-window.addEventListener('scroll', queueChapterDetection, { passive: true });
-window.addEventListener('resize', queueChapterDetection);
-setActiveChapter(0);
-detectCurrentChapter();
+document.addEventListener('wheel', handlePlaneWheel, { passive: false });
+
+document.addEventListener('keydown', event => {
+  if (event.target.matches('input, textarea, button')) return;
+  if (['ArrowDown', 'PageDown'].includes(event.key)) {
+    event.preventDefault();
+    travelByStep(1);
+  }
+  if (['ArrowUp', 'PageUp'].includes(event.key)) {
+    event.preventDefault();
+    travelByStep(-1);
+  }
+});
+
+document.addEventListener('touchstart', event => {
+  touchStartY = event.changedTouches[0].clientY;
+}, { passive: true });
+
+document.addEventListener('touchend', event => {
+  if (isTravelling || performance.now() < travelLockedUntil) return;
+  const distance = touchStartY - event.changedTouches[0].clientY;
+  if (Math.abs(distance) < 55) return;
+
+  const direction = Math.sign(distance);
+  const section = journeySections[activeChapter];
+  if (isAtPlaneEdge(section, direction)) travelByStep(direction);
+}, { passive: true });
+
+document.body.classList.add('plane-mode');
+
+const initialHash = window.location.hash;
+const initialChapter = Math.max(0, journeySections.findIndex(section => `#${section.id}` === initialHash));
+
+journeySections.forEach((section, index) => {
+  const isInitial = index === initialChapter;
+  section.classList.toggle('plane-active', isInitial);
+  section.setAttribute('aria-hidden', String(!isInitial));
+});
+
+revealChapter(journeySections[initialChapter]);
+setActiveChapter(initialChapter);
 
 /* ── Constellation Canvas ── */
 const conCanvas = document.getElementById('constellation-canvas');

@@ -23,20 +23,27 @@
   <div class="nebula-bg"></div>
   <canvas id="space-canvas"></canvas>
 
-  <!-- Wormhole used when travelling between chapters -->
+  <!-- Vector corridor used when crossing between section planes -->
   <div class="wormhole-transition" id="wormhole-transition" aria-hidden="true">
-    <div class="wormhole-vignette"></div>
-    <div class="wormhole-tunnel">
-      <i class="tunnel-ring ring-1"></i>
-      <i class="tunnel-ring ring-2"></i>
-      <i class="tunnel-ring ring-3"></i>
-      <i class="tunnel-ring ring-4"></i>
-      <i class="tunnel-ring ring-5"></i>
-      <i class="tunnel-ring ring-6"></i>
-      <span class="tunnel-core"></span>
+    <div class="vector-space">
+      <div class="vector-grid grid-floor"></div>
+      <div class="vector-grid grid-ceiling"></div>
+      <div class="vector-grid grid-left"></div>
+      <div class="vector-grid grid-right"></div>
+      <div class="vector-portal">
+        <i class="portal-frame frame-1"></i>
+        <i class="portal-frame frame-2"></i>
+        <i class="portal-frame frame-3"></i>
+        <i class="portal-frame frame-4"></i>
+        <i class="portal-frame frame-5"></i>
+        <span class="portal-core"></span>
+      </div>
+      <span class="vector-axis axis-x"></span>
+      <span class="vector-axis axis-y"></span>
     </div>
+    <div class="plane-coordinates" aria-hidden="true">X 04.82&nbsp;&nbsp;Y 11.07&nbsp;&nbsp;Z ∞</div>
     <div class="warp-copy">
-      <span class="warp-kicker">Próximo destino</span>
+      <span class="warp-kicker">Cambio de plano</span>
       <strong id="warp-destination">Perfil</strong>
     </div>
   </div>
@@ -55,7 +62,7 @@
   <!-- Fixed timeline navigation -->
   <aside class="timeline-dock" aria-label="Línea del tiempo del portafolio">
     <div class="timeline-heading">
-      <span>Bitácora</span>
+      <span>Scroll para cambiar de plano</span>
       <span id="timeline-percent">00%</span>
     </div>
     <div class="timeline-track">
