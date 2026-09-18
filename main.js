@@ -45,6 +45,132 @@ const revealObserver = new IntersectionObserver(entries => {
 
 revealEls.forEach(el => revealObserver.observe(el));
 
+/* ── Timeline Navigation + Wormhole Travel ── */
+const timelineDock = document.querySelector('.timeline-dock');
+const timelineStops = Array.from(document.querySelectorAll('.timeline-stop'));
+const wormhole = document.getElementById('wormhole-transition');
+const warpDestination = document.getElementById('warp-destination');
+const journeyCounter = document.getElementById('journey-counter');
+const journeyName = document.getElementById('journey-name');
+const timelinePercent = document.getElementById('timeline-percent');
+const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+const journeySections = timelineStops
+  .map(stop => document.querySelector(stop.getAttribute('href')))
+  .filter(Boolean);
+
+const chapterNames = [
+  'Órbita inicial',
+  'Perfil de misión',
+  'Archivo de proyectos',
+  'Laboratorio API',
+  'Canal de contacto',
+];
+
+let activeChapter = 0;
+let isTravelling = false;
+let scrollFrame = null;
+
+function setActiveChapter(index) {
+  const safeIndex = Math.max(0, Math.min(index, timelineStops.length - 1));
+  const progress = timelineStops.length > 1
+    ? (safeIndex / (timelineStops.length - 1)) * 100
+    : 0;
+
+  activeChapter = safeIndex;
+  timelineDock?.style.setProperty('--journey-progress', `${progress}%`);
+
+  timelineStops.forEach((stop, stopIndex) => {
+    const isActive = stopIndex === safeIndex;
+    stop.classList.toggle('active', isActive);
+    stop.classList.toggle('passed', stopIndex < safeIndex);
+
+    if (isActive) stop.setAttribute('aria-current', 'step');
+    else stop.removeAttribute('aria-current');
+  });
+
+  if (journeyCounter) {
+    journeyCounter.textContent = `${String(safeIndex + 1).padStart(2, '0')} / ${String(timelineStops.length).padStart(2, '0')}`;
+  }
+  if (journeyName) journeyName.textContent = chapterNames[safeIndex];
+  if (timelinePercent) timelinePercent.textContent = `${String(Math.round(progress)).padStart(2, '0')}%`;
+}
+
+function detectCurrentChapter() {
+  const readingLine = window.innerHeight * 0.42;
+  let currentIndex = 0;
+
+  journeySections.forEach((section, index) => {
+    const rect = section.getBoundingClientRect();
+    if (rect.top <= readingLine) currentIndex = index;
+  });
+
+  if (currentIndex !== activeChapter && !isTravelling) {
+    setActiveChapter(currentIndex);
+  }
+}
+
+function queueChapterDetection() {
+  if (scrollFrame) return;
+  scrollFrame = requestAnimationFrame(() => {
+    detectCurrentChapter();
+    scrollFrame = null;
+  });
+}
+
+function travelToChapter(target, label) {
+  const targetIndex = journeySections.indexOf(target);
+  if (targetIndex < 0) return;
+
+  if (reducedMotion.matches) {
+    target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    setActiveChapter(targetIndex);
+    history.replaceState(null, '', `#${target.id}`);
+    return;
+  }
+
+  if (isTravelling) return;
+  isTravelling = true;
+  if (warpDestination) warpDestination.textContent = label;
+
+  wormhole?.classList.remove('is-active');
+  void wormhole?.offsetWidth;
+  wormhole?.classList.add('is-active');
+  document.body.classList.add('is-travelling');
+
+  window.setTimeout(() => {
+    target.scrollIntoView({ behavior: 'auto', block: 'start' });
+    setActiveChapter(targetIndex);
+    history.replaceState(null, '', `#${target.id}`);
+  }, 420);
+
+  window.setTimeout(() => {
+    wormhole?.classList.remove('is-active');
+    document.body.classList.remove('is-travelling');
+    isTravelling = false;
+  }, 980);
+}
+
+document.querySelectorAll('a[href^="#"]').forEach(link => {
+  const selector = link.getAttribute('href');
+  if (!selector || selector === '#') return;
+
+  const target = document.querySelector(selector);
+  if (!target || !journeySections.includes(target)) return;
+
+  link.addEventListener('click', event => {
+    event.preventDefault();
+    const matchingStop = timelineStops.find(stop => stop.getAttribute('href') === selector);
+    const destinationLabel = matchingStop?.dataset.label || target.id;
+    travelToChapter(target, destinationLabel);
+  });
+});
+
+window.addEventListener('scroll', queueChapterDetection, { passive: true });
+window.addEventListener('resize', queueChapterDetection);
+setActiveChapter(0);
+detectCurrentChapter();
+
 /* ── Constellation Canvas ── */
 const conCanvas = document.getElementById('constellation-canvas');
 const conCtx    = conCanvas.getContext('2d');
