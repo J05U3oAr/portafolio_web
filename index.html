@@ -52,7 +52,31 @@
       <span id="timeline-percent">00%</span>
     </div>
     <div class="timeline-track">
-      <span class="timeline-progress" id="timeline-progress"></span>
+      <div class="timeline-wireframe" aria-hidden="true">
+        <svg class="timeline-geometry" viewBox="0 0 720 40" preserveAspectRatio="none">
+          <defs>
+            <linearGradient id="rail-gradient" x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%" stop-color="#a78bfa"/>
+              <stop offset="100%" stop-color="#22d3ee"/>
+            </linearGradient>
+            <path id="rail-mesh" d="M0 20 L30 12 H690 L720 20 L690 28 H30 Z M30 12 L60 28 M30 28 L60 12 M60 12 L90 28 M60 28 L90 12 M90 12 L120 28 M90 28 L120 12 M120 12 L150 28 M120 28 L150 12 M150 12 L180 28 M150 28 L180 12 M180 12 L210 28 M180 28 L210 12 M210 12 L240 28 M210 28 L240 12 M240 12 L270 28 M240 28 L270 12 M270 12 L300 28 M270 28 L300 12 M300 12 L330 28 M300 28 L330 12 M330 12 L360 28 M330 28 L360 12 M360 12 L390 28 M360 28 L390 12 M390 12 L420 28 M390 28 L420 12 M420 12 L450 28 M420 28 L450 12 M450 12 L480 28 M450 28 L480 12 M480 12 L510 28 M480 28 L510 12 M510 12 L540 28 M510 28 L540 12 M540 12 L570 28 M540 28 L570 12 M570 12 L600 28 M570 28 L600 12 M600 12 L630 28 M600 28 L630 12 M630 12 L660 28 M630 28 L660 12 M660 12 L690 28 M660 28 L690 12"/>
+          </defs>
+          <path class="rail-axis" d="M0 20 H720"/>
+          <g class="rail-prism">
+            <use class="rail-structure" href="#rail-mesh"/>
+            <g class="rail-reached"><use href="#rail-mesh"/></g>
+          </g>
+          <path class="rail-reached" d="M0 20 H720"/>
+          <path class="rail-flow" d="M0 20 H720" pathLength="720"/>
+          <path class="rail-flow rail-flow-facet" d="M0 20 L30 12 H690 L720 20" pathLength="720"/>
+        </svg>
+        <span class="timeline-cursor">
+          <svg viewBox="0 0 32 32">
+            <path d="M16 1 L29 8.5 V23.5 L16 31 L3 23.5 V8.5 Z"/>
+            <path class="node-edges" d="M16 1 V31 M3 8.5 L29 23.5 M29 8.5 L3 23.5 M3 8.5 L16 16 L29 8.5 M3 23.5 L16 16 L29 23.5"/>
+          </svg>
+        </span>
+      </div>
       <a class="timeline-stop active" href="#hero" data-index="01" data-label="Inicio" aria-label="Ir a Inicio" aria-current="step">
         <span class="stop-dot"></span><span class="stop-label">Inicio</span>
       </a>
@@ -86,7 +110,7 @@
         </div>
       </div>
       <p class="hero-title">
-        <span class="highlight">Frontend + Backend</span> — Next.js · GO · Python · TypeScript · Java · C++ · Kotlin
+        <span class="highlight">Frontend + Backend</span> — Next.js · GO · Python · TypeScript · Java · C++ · Kotlin · C#
       </p>
       <p class="hero-desc">
         Construyo desde la interfaz hasta la base de datos. Me interesa entender cómo funciona cada capa del stack, no solo usarla.

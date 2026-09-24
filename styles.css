@@ -237,118 +237,180 @@ a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visib
 }
 body.motion-reduced #wireframe-canvas { display: none; }
 
-/* ── PORTFOLIO TIMELINE ── */
+/* ── WIREFRAME JOURNEY LINE ── */
 .timeline-dock {
   --journey-progress: 0%;
   position: fixed;
   left: 50%;
-  bottom: 1.25rem;
+  bottom: max(1.1rem, env(safe-area-inset-bottom));
   z-index: 250;
-  width: min(760px, calc(100vw - 2rem));
-  padding: 0.75rem 1.25rem 1rem;
-  border: 1px solid rgba(167, 139, 250, 0.22);
-  border-radius: 15px;
-  background: linear-gradient(135deg, rgba(10, 7, 28, 0.88), rgba(3, 8, 22, 0.8));
-  box-shadow:
-    0 18px 55px rgba(0, 0, 0, 0.52),
-    inset 0 1px rgba(255, 255, 255, 0.05),
-    0 0 30px rgba(99, 102, 241, 0.08);
-  backdrop-filter: blur(18px);
+  width: min(820px, calc(100vw - 2rem));
   transform: translateX(-50%);
+}
+
+.timeline-dock::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: -2rem;
+  width: 100vw;
+  height: 9rem;
+  transform: translateX(-50%);
+  background: linear-gradient(transparent, rgba(3, 2, 10, 0.88) 68%, var(--void));
+  pointer-events: none;
 }
 
 .timeline-heading {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 0.65rem;
+  padding: 0 10%;
+  margin-bottom: 0.45rem;
   font-family: var(--font-mono);
   font-size: 0.58rem;
-  color: var(--text-muted);
-  letter-spacing: 0.18em;
+  color: var(--text-secondary);
+  letter-spacing: 0.16em;
   text-transform: uppercase;
+  text-shadow: 0 1px 8px var(--void);
 }
-
 .timeline-heading span:last-child { color: var(--accent-cyan); }
 
 .timeline-track {
   position: relative;
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  align-items: start;
 }
 
-.timeline-track::before,
-.timeline-progress {
-  content: '';
+.timeline-wireframe {
   position: absolute;
-  top: 7px;
-  left: 7px;
-  right: 7px;
-  height: 1px;
+  top: 0;
+  left: 10%;
+  right: 10%;
+  height: 40px;
+  pointer-events: none;
 }
+.timeline-geometry {
+  display: block;
+  width: 100%;
+  height: 40px;
+  overflow: visible;
+  fill: none;
+  stroke-width: 0.8;
+}
+.timeline-geometry use, .timeline-geometry path {
+  vector-effect: non-scaling-stroke;
+}
+.rail-structure { stroke: rgba(167, 139, 250, 0.38); }
+.rail-axis { stroke: rgba(167, 139, 250, 0.3); }
+.rail-prism {
+  transform-origin: 50% 20px;
+  animation: railBreath 6s ease-in-out infinite;
+}
+.rail-reached {
+  clip-path: inset(-10px calc(100% - var(--journey-progress)) -10px -10px);
+  stroke: url(#rail-gradient);
+  filter: drop-shadow(0 0 3px rgba(34, 211, 238, 0.3));
+}
+.rail-flow {
+  stroke: var(--accent-cyan);
+  stroke-width: 1.4;
+  stroke-dasharray: 24 696;
+  stroke-dashoffset: 720;
+  filter: drop-shadow(0 0 4px rgba(34, 211, 238, 0.7));
+  animation: railFlow 5s linear infinite;
+}
+.rail-flow-facet {
+  stroke-width: 1;
+  stroke-dasharray: 55 665;
+  opacity: 0.65;
+  animation-duration: 7s;
+}
+.is-travelling .rail-flow { animation-duration: 1.2s; }
+.is-travelling .rail-flow-facet { animation-duration: 1.8s; }
 
-.timeline-track::before {
-  background: rgba(139, 133, 193, 0.22);
+/* The travelling polyhedron follows the very same camera progress. */
+.timeline-cursor {
+  position: absolute;
+  top: 5px;
+  left: var(--journey-progress);
+  width: 30px;
+  height: 30px;
+  transform: translateX(-50%);
+  filter: drop-shadow(0 0 6px rgba(34, 211, 238, 0.55));
 }
-
-.timeline-progress {
-  right: auto;
-  max-width: calc(100% - 14px);
-  width: var(--journey-progress);
-  background: linear-gradient(90deg, var(--accent-violet), var(--accent-cyan));
-  box-shadow: 0 0 12px rgba(34, 211, 238, 0.5);
-  transition: width 500ms cubic-bezier(0.22, 1, 0.36, 1);
+.timeline-cursor svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  fill: var(--void);
+  fill-opacity: 0.75;
+  stroke: var(--accent-cyan);
+  stroke-width: 0.9;
+  animation: railNodeTurn 8s linear infinite;
+  transform-origin: center;
 }
+.timeline-cursor .node-edges { fill: none; stroke-opacity: 0.65; }
 
 .timeline-stop {
   position: relative;
   z-index: 2;
-  min-width: 62px;
+  min-width: 0;
+  min-height: 64px;
+  padding: 13px 0 4px;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.45rem;
-  color: var(--text-muted);
+  gap: 14px;
+  color: var(--text-secondary);
   text-decoration: none;
   font-family: var(--font-mono);
   font-size: 0.58rem;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  transition: color 250ms ease, transform 250ms ease;
+  text-shadow: 0 1px 8px var(--void), 0 0 15px var(--void);
+  transition: color 250ms ease;
 }
-
-.timeline-stop:first-of-type { align-items: flex-start; }
-.timeline-stop:last-of-type { align-items: flex-end; }
-
 .stop-dot {
-  width: 15px;
-  height: 15px;
-  border: 3px solid rgba(7, 5, 26, 0.96);
-  border-radius: 50%;
-  background: #464163;
-  box-shadow: 0 0 0 1px rgba(167, 139, 250, 0.3);
-  transition: background 250ms, box-shadow 250ms, transform 250ms;
+  position: relative;
+  width: 14px;
+  height: 14px;
+  border: 1px solid rgba(167, 139, 250, 0.55);
+  background: var(--void);
+  transform: rotate(45deg) scale(0.7);
+  transition: border-color 250ms, transform 250ms, opacity 250ms;
 }
-
-.timeline-stop.passed .stop-dot {
-  background: var(--accent-violet);
+.stop-dot::before, .stop-dot::after {
+  content: '';
+  position: absolute;
+  background: currentColor;
+  opacity: 0.45;
 }
+.stop-dot::before { left: 50%; top: 0; width: 1px; height: 100%; }
+.stop-dot::after { top: 50%; left: 0; height: 1px; width: 100%; }
+.timeline-stop.passed .stop-dot { border-color: var(--accent-cyan); color: var(--accent-cyan); }
+.timeline-stop.active { color: var(--star); }
+.timeline-stop.active .stop-dot { opacity: 0; }
+.timeline-stop.active .stop-label { color: var(--accent-cyan); }
+.timeline-stop:hover, .timeline-stop:focus-visible { color: var(--star); }
+.timeline-stop:hover .stop-dot { border-color: var(--accent-cyan); transform: rotate(45deg) scale(1); }
+.is-travelling .timeline-stop.active .stop-dot { opacity: 0.55; }
 
-.timeline-stop.active {
-  color: var(--star);
-  transform: translateY(-2px);
+@keyframes railFlow {
+  from { stroke-dashoffset: 720; }
+  to { stroke-dashoffset: 0; }
 }
-
-.timeline-stop.active .stop-dot {
-  background: #fff;
-  box-shadow:
-    0 0 0 3px rgba(34, 211, 238, 0.18),
-    0 0 16px 3px rgba(34, 211, 238, 0.75);
-  transform: scale(1.15);
+@keyframes railBreath {
+  0%, 100% { transform: scaleY(0.8); opacity: 0.7; }
+  50% { transform: scaleY(1.15); opacity: 1; }
 }
-
-.timeline-stop:hover { color: var(--star); }
-.timeline-stop:hover .stop-dot { transform: scale(1.2); }
+@keyframes railNodeTurn {
+  from { transform: perspective(120px) rotateY(0deg); }
+  to { transform: perspective(120px) rotateY(360deg); }
+}
+body.motion-reduced .rail-flow { display: none; }
+body.motion-reduced .rail-prism,
+body.motion-reduced .timeline-cursor svg { animation: none; }
 
 .nav-links {
   display: flex;
@@ -1503,25 +1565,13 @@ body.motion-reduced *::after {
   body { padding-bottom: 6.5rem; }
 
   .timeline-dock {
-    bottom: 0.65rem;
+    bottom: max(0.65rem, env(safe-area-inset-bottom));
     width: calc(100vw - 1rem);
-    padding: 0.65rem 0.75rem 0.75rem;
-    border-radius: 12px;
   }
 
-  .timeline-heading { margin-bottom: 0.5rem; }
-  .timeline-stop { min-width: 15px; }
-  .timeline-stop .stop-label { display: none; }
-  .timeline-stop.active .stop-label {
-    position: absolute;
-    top: 1.5rem;
-    display: block;
-    white-space: nowrap;
-  }
-
-  .timeline-stop:first-of-type .stop-label { left: 0; }
-  .timeline-stop:last-of-type .stop-label { right: 0; }
-  .timeline-track { padding-bottom: 1.1rem; }
+  .timeline-heading { margin-bottom: 0.35rem; padding: 0 6%; font-size: 0.48rem; letter-spacing: 0.08em; }
+  .timeline-stop { font-size: 0.5rem; letter-spacing: 0; }
+  .timeline-cursor { width: 26px; height: 26px; top: 7px; }
 
   .journey-status #journey-name { display: none; }
   .journey-transit { bottom: 7.5rem; font-size: 0.6rem; gap: 0.65rem; }
@@ -1539,4 +1589,6 @@ body.motion-reduced *::after {
   html { scroll-behavior: auto; }
   #wireframe-canvas, .journey-transit { display: none; }
   .status-signal { animation: none; }
+  .rail-prism, .timeline-cursor svg { animation: none; }
+  .rail-flow { display: none; }
 }
