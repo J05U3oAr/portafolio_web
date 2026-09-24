@@ -23,39 +23,25 @@
   <div class="nebula-bg"></div>
   <canvas id="space-canvas"></canvas>
 
-  <!-- Vector corridor used when crossing between section planes -->
-  <div class="wormhole-transition" id="wormhole-transition" aria-hidden="true">
-    <div class="vector-space">
-      <div class="vector-grid grid-floor"></div>
-      <div class="vector-grid grid-ceiling"></div>
-      <div class="vector-grid grid-left"></div>
-      <div class="vector-grid grid-right"></div>
-      <div class="vector-portal">
-        <i class="portal-frame frame-1"></i>
-        <i class="portal-frame frame-2"></i>
-        <i class="portal-frame frame-3"></i>
-        <i class="portal-frame frame-4"></i>
-        <i class="portal-frame frame-5"></i>
-        <span class="portal-core"></span>
-      </div>
-      <span class="vector-axis axis-x"></span>
-      <span class="vector-axis axis-y"></span>
-    </div>
-    <div class="plane-coordinates" aria-hidden="true">X 04.82&nbsp;&nbsp;Y 11.07&nbsp;&nbsp;Z ∞</div>
-    <div class="warp-copy">
-      <span class="warp-kicker">Cambio de plano</span>
-      <strong id="warp-destination">Perfil</strong>
-    </div>
+  <!-- A projected wireframe connects all five section planes. -->
+  <canvas id="wireframe-canvas" aria-hidden="true"></canvas>
+  <div class="journey-transit" aria-hidden="true">
+    <span class="transit-route" id="transit-route">01 / 02</span>
+    <span class="transit-line"></span>
+    <span id="transit-destination">Perfil</span>
   </div>
 
   <!-- Navigation -->
   <nav>
     <a href="#hero" class="nav-logo" aria-label="Volver al inicio">A<span>.</span></a>
-    <div class="journey-status" aria-live="polite">
+    <div class="nav-tools">
+    <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="true" aria-label="Animación 3D activada. Desactivar animación">3D activo</button>
+    <div class="journey-status" aria-live="polite" aria-atomic="true">
       <span class="status-signal"></span>
       <span id="journey-counter">01 / 05</span>
       <span class="status-divider"></span>
       <span id="journey-name">Órbita inicial</span>
+    </div>
     </div>
   </nav>
 
@@ -402,6 +388,8 @@
 
   <!-- Scripts — loaded at end of body so DOM is ready -->
   <script src="space.js"></script>
+  <script src="wireframe.js"></script>
+  <script src="journey.js"></script>
   <script src="main.js"></script>
 
 </body>
