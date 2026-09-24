@@ -288,6 +288,31 @@ function setEmailTrayOpen(isOpen) {
   emailTray.classList.toggle('open', isOpen);
   emailTray.setAttribute('aria-hidden', String(!isOpen));
   emailToggle.setAttribute('aria-expanded', String(isOpen));
+
+  if (isOpen) positionEmailTray();
+}
+
+function positionEmailTray() {
+  if (!emailToggle || !emailTray || !emailTray.classList.contains('open')) return;
+
+  const trigger = emailToggle.getBoundingClientRect();
+  const gap = 12;
+  const margin = 12;
+  const trayWidth = Math.min(310, window.innerWidth * 0.86);
+  const trayHeight = emailTray.offsetHeight;
+  const fitsAbove = trigger.top - trayHeight - gap >= margin;
+  const top = fitsAbove
+    ? trigger.top - trayHeight - gap
+    : Math.min(trigger.bottom + gap, window.innerHeight - trayHeight - margin);
+  const halfWidth = trayWidth / 2;
+  const left = Math.max(
+    halfWidth + margin,
+    Math.min(window.innerWidth - halfWidth - margin, trigger.left + trigger.width / 2),
+  );
+
+  emailTray.dataset.placement = fitsAbove ? 'above' : 'below';
+  emailTray.style.setProperty('--tray-top', `${Math.max(margin, top)}px`);
+  emailTray.style.setProperty('--tray-left', `${left}px`);
 }
 
 if (emailToggle && emailTray) {
@@ -305,4 +330,7 @@ if (emailToggle && emailTray) {
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape') setEmailTrayOpen(false);
   });
+
+  window.addEventListener('resize', positionEmailTray, { passive: true });
+  document.addEventListener('scroll', positionEmailTray, { passive: true, capture: true });
 }

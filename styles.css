@@ -1316,9 +1316,9 @@ body.motion-reduced .timeline-cursor svg { animation: none; }
 }
 
 .email-tray {
-  position: absolute;
-  top: calc(100% + 0.75rem);
-  left: 50%;
+  position: fixed;
+  top: var(--tray-top, 0px);
+  left: var(--tray-left, 50%);
   width: min(310px, 86vw);
   padding: 0.65rem;
   border: 1px solid rgba(167, 139, 250, 0.28);
@@ -1330,15 +1330,24 @@ body.motion-reduced .timeline-cursor svg { animation: none; }
   backdrop-filter: blur(16px);
   opacity: 0;
   pointer-events: none;
-  transform: translate(-50%, -8px);
+  transform: translate(-50%, -8px) scale(0.98);
   transition: opacity 0.2s, transform 0.2s;
-  z-index: 8;
+  z-index: 1000;
+  will-change: top, left, opacity, transform;
 }
 
 .email-tray.open {
   opacity: 1;
   pointer-events: auto;
-  transform: translate(-50%, 0);
+  transform: translate(-50%, 0) scale(1);
+}
+
+.email-tray[data-placement="above"] {
+  transform: translate(-50%, 8px) scale(0.98);
+}
+
+.email-tray[data-placement="above"].open {
+  transform: translate(-50%, 0) scale(1);
 }
 
 .email-option {
