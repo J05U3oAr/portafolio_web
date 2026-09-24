@@ -23,16 +23,53 @@
   <div class="nebula-bg"></div>
   <canvas id="space-canvas"></canvas>
 
+  <!-- A projected wireframe connects all five section planes. -->
+  <canvas id="wireframe-canvas" aria-hidden="true"></canvas>
+  <div class="journey-transit" aria-hidden="true">
+    <span class="transit-route" id="transit-route">01 / 02</span>
+    <span class="transit-line"></span>
+    <span id="transit-destination">Perfil</span>
+  </div>
+
   <!-- Navigation -->
   <nav>
-    <a href="#hero" class="nav-logo">A<span>.</span></a>
-    <ul class="nav-links">
-      <li><a href="#about">Sobre mí</a></li>
-      <li><a href="#projects">Proyectos</a></li>
-      <li><a href="#api-demo">API Demo</a></li>
-      <li><a href="#contact">Contacto</a></li>
-    </ul>
+    <a href="#hero" class="nav-logo" aria-label="Volver al inicio">A<span>.</span></a>
+    <div class="nav-tools">
+    <button class="motion-toggle" id="motion-toggle" type="button" aria-pressed="true" aria-label="Animación 3D activada. Desactivar animación">3D activo</button>
+    <div class="journey-status" aria-live="polite" aria-atomic="true">
+      <span class="status-signal"></span>
+      <span id="journey-counter">01 / 05</span>
+      <span class="status-divider"></span>
+      <span id="journey-name">Órbita inicial</span>
+    </div>
+    </div>
   </nav>
+
+  <!-- Fixed timeline navigation -->
+  <aside class="timeline-dock" aria-label="Línea del tiempo del portafolio">
+    <div class="timeline-heading">
+      <span>Scroll para cambiar de plano</span>
+      <span id="timeline-percent">00%</span>
+    </div>
+    <div class="timeline-track">
+      <span class="timeline-progress" id="timeline-progress"></span>
+      <a class="timeline-stop active" href="#hero" data-index="01" data-label="Inicio" aria-label="Ir a Inicio" aria-current="step">
+        <span class="stop-dot"></span><span class="stop-label">Inicio</span>
+      </a>
+      <a class="timeline-stop" href="#about" data-index="02" data-label="Perfil" aria-label="Ir a Perfil">
+        <span class="stop-dot"></span><span class="stop-label">Perfil</span>
+      </a>
+      <a class="timeline-stop" href="#projects" data-index="03" data-label="Proyectos" aria-label="Ir a Proyectos">
+        <span class="stop-dot"></span><span class="stop-label">Proyectos</span>
+      </a>
+      <a class="timeline-stop" href="#api-demo" data-index="04" data-label="API" aria-label="Ir a API Demo">
+        <span class="stop-dot"></span><span class="stop-label">API</span>
+      </a>
+      <a class="timeline-stop" href="#contact" data-index="05" data-label="Contacto" aria-label="Ir a Contacto">
+        <span class="stop-dot"></span><span class="stop-label">Contacto</span>
+      </a>
+    </div>
+  </aside>
 
   <main>
 
@@ -74,7 +111,7 @@
             Soy desarrollador fullstack con enfoque en construir sistemas que funcionan de punta a punta. Trabajo cómodo tanto en la lógica de servidor como en la experiencia de usuario.
           </p>
           <p>
-            Mi forma de aprender es construyendo: entiendo mejor un concepto cuando lo implemento, esto puede reflejar un poco mi manera de trabajar. me gusta involucrarme en todas las partes del proyecto, desde la base de datos hasta la interfaz, para tener una visión completa de cómo todo encaja.
+            Mi forma de aprender es construyendo: entiendo mejor un concepto cuando lo implemento, lo rompo y lo arreglo. Eso se refleja en cómo abordo los proyectos — comienzo desde el problema real, no desde el framework.
           </p>
           <p>
             Busco unirme a un equipo donde pueda tocar múltiples partes del producto, seguir aprendiendo en producción, y contribuir desde el día uno.
@@ -343,13 +380,16 @@
   </main>
 
   <footer>
-    <span class="footer-text">Arodi Vásquez — Fullstack Developer — Guatemala 2026</span>
+    <span class="footer-text">Arodi Vásquez — Fullstack Developer — Guatemala 2025</span>
     <span class="footer-coords">
+      <span>14.6349° N</span> · <span>90.5069° W</span>
     </span>
   </footer>
 
   <!-- Scripts — loaded at end of body so DOM is ready -->
   <script src="space.js"></script>
+  <script src="wireframe.js"></script>
+  <script src="journey.js"></script>
   <script src="main.js"></script>
 
 </body>

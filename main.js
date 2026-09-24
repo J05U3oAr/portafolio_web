@@ -45,6 +45,8 @@ const revealObserver = new IntersectionObserver(entries => {
 
 revealEls.forEach(el => revealObserver.observe(el));
 
+/* Section navigation and the shared 3D camera live in journey.js. */
+
 /* ── Constellation Canvas ── */
 const conCanvas = document.getElementById('constellation-canvas');
 const conCtx    = conCanvas.getContext('2d');
